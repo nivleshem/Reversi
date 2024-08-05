@@ -1,8 +1,10 @@
 class Board:
-    matrix = []
-    size = 8
+
+    matrix = None
+    size = None
 
     def __init__(self, n):
+        self.matrix = []
         self.size = n
         self.set_board()
 
@@ -18,8 +20,11 @@ class Board:
         self.matrix[index - 1][index] = "W"
         self.matrix[index][index - 1] = "W"
         self.matrix[index][index] = "B"
+
         return self.matrix
+
     def display(self):
+        print("self.size = ", self.size)
         col_str = " "
         for c in range(self.size):
             col_str = col_str + "  " + str(c + 1)
