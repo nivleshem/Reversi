@@ -3,10 +3,12 @@ from cell import Cell
 
 
 class Board:
-    matrix = []
-    size = 8
+
+    matrix = None
+    size = None
 
     def __init__(self, n):
+        self.matrix = []
         self.size = n
         self.set_board()
 
@@ -22,7 +24,9 @@ class Board:
         self.matrix[index - 1][index] = "W"
         self.matrix[index][index - 1] = "W"
         self.matrix[index][index] = "B"
+
         return self.matrix
+
 
     def translateCellToRowCol(self, cell):
         row = int(cell.row) - 1
@@ -43,6 +47,10 @@ class Board:
     def __str__(self):
 
         result_str = ""
+
+
+    def display(self):
+        print("self.size = ", self.size)
 
         col_str = " "
         for c in range(self.size):
