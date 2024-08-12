@@ -12,6 +12,25 @@ class Board:
         self.size = n
         self.set_board()
 
+    def __str__(self):
+        result_str = ""
+        col_str = " "
+        for c in range(self.size):
+            col_str = col_str + "  " + self.translateNumToLetter(c).upper()
+        result_str += col_str + "\n"
+
+        for r in range(self.size):
+            row = self.matrix[r]
+            row_str = str(r + 1)
+            for c in range(self.size):
+                cell_value = row[c]
+                if (cell_value == "E"):
+                    cell_value = "_"
+                row_str = row_str + "  " + cell_value
+            result_str += row_str + "\n"
+
+        return result_str
+
     def set_board(self):
         for i in range(self.size):
             row = []
@@ -20,12 +39,27 @@ class Board:
             self.matrix.append(row)
 
         index = int(self.size / 2)
-        self.matrix[index - 1][index - 1] = "B"
-        self.matrix[index - 1][index] = "W"
-        self.matrix[index][index - 1] = "W"
-        self.matrix[index][index] = "B"
+        self.setCell( index - 1, index - 1, "B")
+        self.setCell( index - 1, index,     "W")
+        self.setCell( index    , index - 1, "W")
+        self.setCell( index    , index    , "B")
 
         return self.matrix
+
+    def setCell(self, col, row , color):
+        self.matrix[col][row] = color
+
+    def SetCell(self, cell, color):
+        col, row = self.translateCellToRowCol(cell)
+        self.SetCell(col, row, color)
+
+    def getCell(self, col, row):
+        return self.matrix[col][row]
+
+    def GetCell(self, cell):
+        col, row = self.translateCellToRowCol(cell)
+        return self.GetCell(col, row)
+
 
 
     def translateCellToRowCol(self, cell):
@@ -44,37 +78,6 @@ class Board:
             return chr(number + ord('a') - 1)
         else:
             raise ValueError("Number must be between 1 and 26")
-    def __str__(self):
-
-        result_str = ""
-
-
-    def display(self):
-        print("self.size = ", self.size)
-
-        col_str = " "
-        for c in range(self.size):
-            col_str = col_str + "  " + self.translateNumToLetter(c)
-        result_str += col_str + "\n"
-
-        for r in range(self.size):
-            row = self.matrix[r]
-            row_str = str(r + 1)
-            for c in range(self.size):
-                cell_value = row[c]
-                if (cell_value == "E"):
-                    cell_value = "_"
-                row_str = row_str + "  " + cell_value
-            result_str += row_str + "\n"
-
-        return result_str
-
-    def SetCell(self, letter, num , color):
-
-        finished_num = num - 1
-        finished_letter = self.translateLetterToNum(letter)
-
-        self.matrix[finished_num][finished_letter] = color
 
     def translateLetterToNum(self, letter):
         letter = letter.lower()
@@ -91,17 +94,8 @@ class Board:
         else:
             raise ValueError("Number must be between 1 and 26")
 
-
-    def GetCell(self, col , row):
-        if(self.matrix[row][col] == "E"):
-            return "E"
-        if(self.matrix[row][col] == "W"):
-            return "W"
-        if(self.matrix[row][col] == "B"):
-            return "B"
-
     def IsEmptyCell(self, col, row):
-        color = self.GetCell(col, row)
+        color = self.getCell(col, row)
         if (color == "E"):
             return True
         return False
@@ -157,7 +151,7 @@ class Board:
         return True
 
     def isColorEqual(self, col, row, color):
-        c = self.GetCell(col , row)
+        c = self.getCell(col , row)
         if(c == color):
             return True
         return False
