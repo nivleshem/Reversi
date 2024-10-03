@@ -5,6 +5,9 @@ class Disk:
 
     def __str__(self):
         return str(self.cell) + "," + self.color
+    def __repr__(self):
+        return str(self.cell) + "," + self.color
+
 
 
 

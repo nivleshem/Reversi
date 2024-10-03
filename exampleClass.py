@@ -1,41 +1,34 @@
 
 class ExampleClass:
 
-    mylist = []
-    counter = 10
-
     def __init__(self):
-        self.counter = 45
+        counter = 45
+        jjj = 67
+        self.sum = counter
 
-    def GetListSize(self):
-        return len(self.mylist)
 
-    def AddToList(self, val):
-        self.mylist.append(val)
+    def foo(self):
+        print(self.jjj)
 
-    def GetValueAtIndex(self, index):
-        return self.mylist[index]
-
-    def GetCounter(self):
-        self.counter += 1
-        return self.counter
 
 
 
 #######
 # test the ExampleClass
 
-exCls = ExampleClass()
+#exCls = ExampleClass()
+#exCls.foo()
 
-print("list size:", exCls.GetListSize())
-exCls.AddToList("val1")
-exCls.AddToList("val2")
-exCls.AddToList("val3")
-print("list size:", exCls.GetListSize())
-print("val at index 0", exCls.GetValueAtIndex(0))
-print("val at index 0", exCls.GetValueAtIndex(1))
-print(exCls.GetCounter())
-print(exCls.GetCounter())
-print(exCls.GetCounter())
-print(exCls.GetCounter())
-print(exCls.GetCounter())
+def foo(v1):
+    v1.append(4)
+    v1.append(5)
+    v1.append(6)
+    print(v1)
+
+v1 = [1, 2, 3]
+
+print("Before foo() v1", v1)
+foo(v1.copy())
+print("After foo() v1", v1)
+
+

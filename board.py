@@ -7,10 +7,10 @@ class Board:
     matrix = None
     size = None
 
-    def __init__(self, n):
+    def __init__(self, n, place_starting_disks=True):
         self.matrix = []
         self.size = n
-        self.set_board()
+        self.set_board(place_starting_disks)
 
     def __str__(self):
         result_str = ""
@@ -31,34 +31,35 @@ class Board:
 
         return result_str
 
-    def set_board(self):
+    def set_board(self, place_starting_disks=True):
         for i in range(self.size):
             row = []
             for j in range(self.size):
                 row.append("E")
             self.matrix.append(row)
 
-        index = int(self.size / 2)
-        self.setCell( index - 1, index - 1, "B")
-        self.setCell( index - 1, index,     "W")
-        self.setCell( index    , index - 1, "W")
-        self.setCell( index    , index    , "B")
+        if (place_starting_disks):
+            index = int(self.size / 2)
+            self.setCell( index - 1, index - 1, "B")
+            self.setCell( index - 1, index,     "W")
+            self.setCell( index    , index - 1, "W")
+            self.setCell( index    , index    , "B")
 
         return self.matrix
 
     def setCell(self, col, row , color):
-        self.matrix[col][row] = color
+        self.matrix[row][col] = color
 
     def SetCell(self, cell, color):
         col, row = self.translateCellToRowCol(cell)
-        self.SetCell(col, row, color)
+        self.setCell(col, row, color)
 
     def getCell(self, col, row):
-        return self.matrix[col][row]
+        return self.matrix[row][col]
 
     def GetCell(self, cell):
         col, row = self.translateCellToRowCol(cell)
-        return self.GetCell(col, row)
+        return self.getCell(col, row)
 
 
 
@@ -129,9 +130,9 @@ class Board:
             row_delta = 1
             col_delta = 1
 
-        # niv - fix delta initialization according to direction
+        my_color = disk.color
         opposite_color = 'W'
-        if (disk.color == "W"):
+        if (my_color == "W"):
             opposite_color = "B"
 
         current_row += row_delta
@@ -139,9 +140,21 @@ class Board:
 
         while ( self.ValidateCell(current_col, current_row) and (not self.IsEmptyCell(current_col, current_row)) and ( self.isColorEqual(current_col, current_row, opposite_color)) ):
             cell = self.translateRowColToCell(current_col, current_row)
-            captured_disks.append((str(cell) , opposite_color))
+            captured_disks.append(Disk(cell, opposite_color))
             current_row += row_delta
             current_col += col_delta
+
+        # append the last disk if it's not empty
+        if ( (self.ValidateCell(current_col, current_row)) and (not self.IsEmptyCell(current_col, current_row)) ):
+            cell = self.translateRowColToCell(current_col, current_row)
+            captured_disks.append(Disk(cell, my_color))
+
+        if ( len(captured_disks) > 0):
+            last_disk = captured_disks[-1]
+            if (last_disk.color == my_color):
+                return captured_disks[0:-1]
+            else:
+                return []
 
         return captured_disks
 

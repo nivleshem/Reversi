@@ -68,20 +68,53 @@ class BoardTests(unittest.TestCase):
         self.assertEqual(b2.getCell(2, 1), "E")
         self.assertEqual(b2.getCell(2, 2), "B")
 
+    def testIsEmptyCell(self):
+        b = Board(6, False)
+
+        b.SetCell(Cell("E4"), "W")
+        b.SetCell(Cell("E5"), "W")
+        b.SetCell(Cell("E6"), "B")
+
+        res = b.IsEmptyCell(4, 3)
+        self.assertEqual(res, False)
+
 
     def testGetCapturedCellNorth1(self):
         b = Board(6)
         d = Disk(Cell("C5"), "B")
+        print(b)
         captured = b.GetCapturedCells(d , "N")
         print(captured)
-        d2 = Disk(Cell("D5"), "W")
-        captured2 = b.GetCapturedCells(d2, "N")
-        print(captured2)
+
 
     def testGetCapturedCellSouth1(self):
         b = Board(6)
         d = Disk(Cell("C2"), "W")
         captured = b.GetCapturedCells(d , "S")
+        print(captured)
+
+    def testGetCapturedCellSouth2(self):
+        b = Board(6, False)
+
+        b.SetCell(Cell("E4"), "W")
+        b.SetCell(Cell("E5"), "W")
+        b.SetCell(Cell("E6"), "B")
+
+        d = Disk(Cell("E3"), "B")
+        captured = b.GetCapturedCells(d, "S")
+        print(b)
+        print(captured)
+
+    def testGetCapturedCellSouth3(self):
+        b = Board(6, False)
+
+        b.SetCell(Cell("E4"), "W")
+        b.SetCell(Cell("E5"), "W")
+        b.SetCell(Cell("E6"), "W")
+
+        d = Disk(Cell("E3"), "B")
+        captured = b.GetCapturedCells(d, "S")
+        print(b)
         print(captured)
 
     def testGetCapturedCellWest1(self):
@@ -95,3 +128,78 @@ class BoardTests(unittest.TestCase):
         d = Disk(Cell("B4"), "B")
         captured = b.GetCapturedCells(d , "E")
         print(captured)
+
+    def testGetCapturedNorthWest3(self):
+        b = Board(6, True)
+
+        b.SetCell(Cell("B2"), "W")
+
+
+        d = Disk(Cell("E5"), "W")
+        captured = b.GetCapturedCells(d, "NW")
+        print(b)
+        print(captured)
+
+
+    def testGetCapturedNorthEast3(self):
+        b = Board(6, False)
+
+        b.SetCell(Cell("C4"), "W")
+        b.SetCell(Cell("D3"), "W")
+        b.SetCell(Cell("E2"), "B")
+
+
+        d = Disk(Cell("B5"), "B")
+        captured = b.GetCapturedCells(d, "NE")
+        print(b)
+        print(captured)
+
+
+    def testGetCapturedSouthWest3(self):
+        b = Board(6, True)
+
+        b.SetCell(Cell("B4"), "W")
+
+
+        d = Disk(Cell("D2"), "W")
+        captured = b.GetCapturedCells(d, "SW")
+        print(b)
+        print(captured)
+
+
+    def testGetCapturedSouthEast3(self):
+        b = Board(6, True)
+
+        b.SetCell(Cell("E5"), "W")
+
+
+        d = Disk(Cell("B2"), "W")
+        captured = b.GetCapturedCells(d, "SE")
+        print(b)
+        print(captured)
+
+
+    def testGetCapturedSouthEastErrors3(self):
+        b = Board(6, True)
+
+
+        b.SetCell(Cell("F6"), "B")
+
+
+        d = Disk(Cell("E5"), "W")
+        captured = b.GetCapturedCells(d, "SE")
+        print(b)
+        print(captured)
+
+    def testAppendLists(self):
+        list1 = [1, 2, 3]
+        list2 = [4, 5, 6]
+        list3 = [7, 8, 9]
+
+        combined_list = []
+        combined_list += list1
+        combined_list += list2
+        combined_list += list3
+
+        print(combined_list)
+
